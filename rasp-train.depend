@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1494040421 source:/home/pi/repo/rasp-train/src/BasePinHandler.cpp
+	"BasePinHandler.h"
+
+1494040345 /home/pi/repo/rasp-train/src/BasePinHandler.h
+
+1494043139 source:/home/pi/repo/rasp-train/src/main.cpp
+	<signal.h>
+	<wiringPi.h>
+	<iostream>
+	<thread>
+	"PwmPinHandler.h"
+	"SwitchPinHandler.h"
+
+1494040326 /home/pi/repo/rasp-train/src/PwmPinHandler.h
+	<iostream>
+	<wiringPi.h>
+	<thread>
+	"BasePinHandler.h"
+
+1494043297 source:/home/pi/repo/rasp-train/src/PwmPinHandler.cpp
+	"PwmPinHandler.h"
+
+1494042831 source:/home/pi/repo/rasp-train/src/SwitchPinHandler.cpp
+	"SwitchPinHandler.h"
+
+1494041604 /home/pi/repo/rasp-train/src/SwitchPinHandler.h
+	<iostream>
+	<wiringPi.h>
+	"BasePinHandler.h"
+
