@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="src" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -31,6 +33,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="src/BasePinHandler.cpp" />
+		<Unit filename="src/BasePinHandler.h" />
+		<Unit filename="src/PwmPinHandler.cpp" />
+		<Unit filename="src/PwmPinHandler.h" />
+		<Unit filename="src/SwitchPinHandler.cpp" />
+		<Unit filename="src/SwitchPinHandler.h" />
+		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
