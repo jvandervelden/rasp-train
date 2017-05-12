@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SRC_ROOT=src
+SRC_ROOT=src/daemon
 LIB_ROOT=bin/obj
 
 mkdir -p $LIB_ROOT

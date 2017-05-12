@@ -1,0 +1,28 @@
+{
+  "name": "rasp-train",
+  "version": "1.0.0",
+  "description": "Rest api for controlling the rasp-train daemon.",
+  "main": "src/node/start.js",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "express": "^4.15.2",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvandervelden/rasp-train.git"
+  },
+  "keywords": [
+    "Raspberry PI"
+  ],
+  "author": "Jasper Vander Velden",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jvandervelden/rasp-train/issues"
+  },
+  "homepage": "https://github.com/jvandervelden/rasp-train#readme"
+}
