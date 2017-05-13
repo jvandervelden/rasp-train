@@ -1,12 +1,11 @@
 var express = require('express');
 var path = require('path');
 var args = require('commander');
+var initGpio = require('./gpio/gpio.js').init;
 var _ = require('underscore');
 var programVersion = '1.0.0';
 var port;
 var basePath;
-
-console.log(JSON.stringify(process.argv));
 
 args.version(programVersion)
     .option('-p, --port <port>', 'Port to listen on.', /^([0-9]+)$/, '3000')
@@ -15,6 +14,9 @@ args.version(programVersion)
 
 port = args.port;
 basePath = args.basePath;
+
+console.log('Initializing GPIO system.');
+initGpio();
 
 var app = express();
 
