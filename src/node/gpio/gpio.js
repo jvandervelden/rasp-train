@@ -16,14 +16,16 @@ var readGpios = function () {
         if (parts[3].trim() != '' && parts[1].trim() != '') {
             gpioMap[parts[3] + ''] = {
                 name: parts[2].trim(),
-                wiringPiPin: parts[1]
+                wiringPiPin: parts[1],
+                physicalPin: parts[3]
             };
         }
 
         if (parts[4].trim() != '' && parts[6].trim() != '') {
             gpioMap[parts[4] + ''] = {
                 name: parts[5].trim(),
-                wiringPiPin: parts[6]
+                wiringPiPin: parts[6],
+                physicalPin: parts[4]
             };
         }
     }
