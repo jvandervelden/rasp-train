@@ -11,8 +11,14 @@
 #include <signal.h>
 #include <wiringPi.h>
 
+#include <string>
+
 #include <iostream>
 #include <thread>
+
+#include <zmq.hpp>
+
+#include <unistd.h>
 
 #include "PwmPinHandler.h"
 #include "SwitchPinHandler.h"
@@ -46,7 +52,35 @@ int main(int argc, char **argv)
     pwmHandler->run();
     pwmHandler->setValue(0.0f);
 
+    zmq::context_t context (1);
+    zmq::socket_t socket (context, ZMQ_REP);
+    socket.bind ("tcp://127.0.0.1:5555");
+
+    cout << "Socket oppened on port 5555." << endl;
+
+    char buffer[2048] = {};
+
     while (run) {
+        zmq::message_t request;
+
+        //  Wait for next request from client
+        socket.recv (&request);
+
+        memcpy(&buffer, request.data(), request.size());
+
+        buffer[request.size() + 1] = '\0';
+
+        cout << buffer << endl;
+
+        //  Do some 'work'
+        sleep(1);
+
+        //  Send reply back to client
+        zmq::message_t reply (15);
+        memcpy (reply.data (), "{\"status\":\"ok\"}", 15);
+        socket.send (reply);
+
+        /*
         cout << "Edit Value:\n";
         cout << "1: PWM (Motor)\n";
         cout << "2: Switch\n";
@@ -80,7 +114,11 @@ int main(int argc, char **argv)
                 cout << menuValue << " is not a valid item.\n";
                 break;
         }
+        */
     }
+
+    socket.close();
+
 
     switchHandler->stop();
     pwmHandler->stop();

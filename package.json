@@ -6,7 +6,8 @@
   "dependencies": {
     "commander": "^2.9.0",
     "express": "^4.15.2",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "zeromq": "^4.2.2"
   },
   "devDependencies": {},
   "scripts": {
