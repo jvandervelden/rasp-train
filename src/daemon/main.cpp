@@ -72,9 +72,6 @@ int main(int argc, char **argv)
 
         cout << buffer << endl;
 
-        //  Do some 'work'
-        sleep(1);
-
         //  Send reply back to client
         zmq::message_t reply (15);
         memcpy (reply.data (), "{\"status\":\"ok\"}", 15);

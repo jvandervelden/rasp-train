@@ -4,3 +4,4 @@ obj/
 *.layout
 node_modules/
 npm-debug.log
+.idea/
