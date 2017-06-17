@@ -25,6 +25,8 @@ require('./resources').startResrouces(app);
 console.log('Serving static content from: ' + path.join(basePath, 'static'));
 app.use(express.static(path.join(basePath, 'static')));
 
+//app.use(express.bodyParser());
+
 app.listen(port, function () {
     console.log('Raspberry Train started on port: ' + port);
 });

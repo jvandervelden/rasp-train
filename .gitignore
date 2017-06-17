@@ -1,6 +1,6 @@
 bin/
 obj/
-.o
+**/*.o
 *.layout
 node_modules/
 npm-debug.log

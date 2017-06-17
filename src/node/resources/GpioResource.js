@@ -37,6 +37,8 @@ GpioResource.prototype.handlePutRequest = function (request, response) {
     var gpioId = request.params.gpioId;
     var gpioModel = gpioService.getGpioById(gpioId);
 
+
+
     if (gpioModel != null) {
         wiringPiService.setPinStatus(gpioModel, 0.0);
         response.status(200).send(gpioModel);
