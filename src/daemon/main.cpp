@@ -33,17 +33,18 @@ int main(int argc, char **argv)
     signal(SIGKILL, on_sig_int);
     signal(SIGINT, on_sig_int);
 
-    cout << "Initializing wiring Pi.\n";
+    cout << "Initializing wiring Pi." << endl;
 
     wiringPiSetup();
 
-    QueueMessageHandler* messageHandler = new QueueMessageHandler(5555);
+    PinHandlerManager* pinHandlerManager = new PinHandlerManager();
+    QueueMessageHandler messageHandler(5555, pinHandlerManager);
 
-    while (run) {
+    while (run && messageHandler.isRunning()) {
 
     }
 
-    delete messageHandler;
+    delete pinHandlerManager;
 
     return 0;
 }
