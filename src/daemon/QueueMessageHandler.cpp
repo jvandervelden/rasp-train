@@ -1,4 +1,3 @@
-#include <zmq.hpp>
 #include "QueueMessageHandler.h"
 
 QueueMessageHandler::QueueMessageHandler(int listenPort, PinHandlerManager* pinHandlerManager) {
@@ -68,7 +67,7 @@ string QueueMessageHandler::handleConfigMessage(string messageData) {
         this->running = false;
         return buildSuccessMessage("");
     } else if (configMessageType == CONFIG_MESSAGE_SET_ALL_VALUE_0) {
-        this->pinHandlerManager->loopHandlers([](PinHandlerNode* node) {
+        this->pinHandlerManager->loopHandlers([](PinHandlerNode* node, int index, bool first, bool last) {
             node->handler->setValue(0.0f);
         });
         return buildSuccessMessage("");
@@ -80,22 +79,22 @@ string QueueMessageHandler::handleConfigMessage(string messageData) {
 
         BasePinHandler* handler = this->pinHandlerManager->GetHandler(iPin);
 
-        if (handler == NULL) {
+        if (handler != NULL) {
             this->pinHandlerManager->DeleteHandler(iPin);
         }
 
         BasePinHandler* newHandler;
 
         if (gpioType == PIN_TYPE_PWM) {
-            newHandler = new PwmPinHandler(iPin);
+            newHandler = (BasePinHandler*)new PwmPinHandler(iPin);
         } else if (gpioType == PIN_TYPE_SWITCH) {
-            newHandler = new SwitchPinHandler(iPin);
+            newHandler = (BasePinHandler*)new SwitchPinHandler(iPin);
         } else {
             return buildErrorMessage("Gpio pin type: " + gpioType + " is invalid.");
         }
 
-        newHandler.setValue(0.0f);
-        newHandler.run();
+        newHandler->setValue(0.0f);
+        newHandler->run();
 
         this->pinHandlerManager->AddHandler(newHandler);
     } else if (configMessageType == CONFIG_MESSAGE_DELETE_GPIO) {
@@ -135,7 +134,62 @@ string QueueMessageHandler::handleGpioMessage(string messageData) {
 }
 
 string QueueMessageHandler::handleQueryMessage(string messageData) {
-    return buildErrorMessage("Not implemented yet");
+    string queryMessageType = messageData.substr(0, messageData.find_first_of(':'));
+
+    if (queryMessageType == QUERY_MESSAGE_GPIO) {
+        string pin = messageData.substr(messageData.find_first_of(':') + 1, 3);
+        int iPin = stoi(pin);
+        BasePinHandler* handler = this->pinHandlerManager->GetHandler(iPin);
+
+        if (handler == NULL) {
+            return buildErrorMessage("Pin: " + pin + " is not initialized.");
+        }
+
+        string pinJson = buildGpioMessage(handler);
+
+        return buildSuccessMessage(pinJson);
+    } else if (queryMessageType == QUERY_MESSAGE_ALL_GPIOS) {
+        string replyJson = "[";
+
+        /*
+        this->pinHandlerManager->loopHandlers([] (BasePinHandler* handler, int index, bool first, bool last) {
+            string pinJson;
+            pinJson += "{\"wiringPiPin\":\"";
+            pinJson += handler->getPin();
+            pinJson += "\",\"type\":\"";
+            pinJson += handler->getType();
+            pinJson += "\",\"value\":";
+            pinJson += handler->getValue();
+            pinJson += "}";
+
+            replyJson += pinJson;
+
+            if (!last) {
+                replyJson += ",";
+            }
+        });
+        */
+
+        replyJson += "]";
+
+        return buildSuccessMessage(replyJson);
+    } else if (queryMessageType == QUERY_MESSAGE_DAEMON_STATUS) {
+    }
+
+    return buildErrorMessage("Query message type: " + queryMessageType + " is invalid.");
+}
+
+string QueueMessageHandler::buildGpioMessage(BasePinHandler* handler) {
+    string message;
+    message += "{\"wiringPiPin\":\"";
+    message += handler->getPin();
+    message += "\",\"type\":\"";
+    message += handler->getType();
+    message += "\",\"value\":";
+    message += handler->getValue();
+    message += "}";
+
+    return message;
 }
 
 string QueueMessageHandler::buildSuccessMessage(string successValue) {

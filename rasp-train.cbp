@@ -33,15 +33,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="src/daemon/BasePinHandler.cpp" />
-		<Unit filename="src/daemon/BasePinHandler.h" />
-		<Unit filename="src/daemon/PwmPinHandler.cpp" />
-		<Unit filename="src/daemon/PwmPinHandler.h" />
+		<Unit filename="src/daemon/MessageDefinitions.h" />
+		<Unit filename="src/daemon/PinHandlerManager.cpp" />
+		<Unit filename="src/daemon/PinHandlerManager.h" />
 		<Unit filename="src/daemon/QueueMessageHandler.cpp" />
 		<Unit filename="src/daemon/QueueMessageHandler.h" />
-		<Unit filename="src/daemon/SwitchPinHandler.cpp" />
-		<Unit filename="src/daemon/SwitchPinHandler.h" />
 		<Unit filename="src/daemon/main.cpp" />
+		<Unit filename="src/daemon/pinHandlers/BasePinHandler.cpp" />
+		<Unit filename="src/daemon/pinHandlers/BasePinHandler.h" />
+		<Unit filename="src/daemon/pinHandlers/PwmPinHandler.cpp" />
+		<Unit filename="src/daemon/pinHandlers/PwmPinHandler.h" />
+		<Unit filename="src/daemon/pinHandlers/SwitchPinHandler.cpp" />
+		<Unit filename="src/daemon/pinHandlers/SwitchPinHandler.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

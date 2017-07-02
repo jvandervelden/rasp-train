@@ -4,6 +4,7 @@
 #include <iostream>
 #include <wiringPi.h>
 #include <thread>
+
 #include "BasePinHandler.h"
 
 using namespace std;
@@ -11,10 +12,14 @@ using namespace std;
 class PwmPinHandler : public BasePinHandler {
     public:
         PwmPinHandler(int pin);
+
         void run();
         void stop();
         void setValue(float value);
-        virtual ~PwmPinHandler();
+        float getValue();
+        string getType();
+
+        ~PwmPinHandler();
     protected:
     private:
         float onPercent = 0.0;

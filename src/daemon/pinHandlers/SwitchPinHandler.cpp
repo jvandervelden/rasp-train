@@ -28,6 +28,14 @@ void SwitchPinHandler::setGpioValue() {
     }
 }
 
+float SwitchPinHandler::getValue() {
+    return this->on ? 1.0f : 0.0f;
+}
+
+string SwitchPinHandler::getType() {
+    return PIN_TYPE_SWITCH;
+}
+
 SwitchPinHandler::~SwitchPinHandler() {
     this->stop();
 }

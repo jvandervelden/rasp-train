@@ -14,9 +14,10 @@ class SwitchPinHandler : public BasePinHandler
         void run();
         void stop();
         void setValue(float value);
+        float getValue();
+        string getType();
 
-        virtual ~SwitchPinHandler();
-    protected:
+        ~SwitchPinHandler();
     private:
         bool on = false;
 

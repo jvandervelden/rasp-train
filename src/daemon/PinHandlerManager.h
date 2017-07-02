@@ -11,7 +11,7 @@ struct PinHandlerNode {
     PinHandlerNode* prev;
 };
 
-typedef void (* NodeLoopHandler)(PinHandlerNode* node);
+typedef void (* NodeLoopHandler)(PinHandlerNode* node, int index, bool first, bool last);
 
 class PinHandlerManager {
     public:

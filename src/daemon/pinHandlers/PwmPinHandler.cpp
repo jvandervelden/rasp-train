@@ -47,6 +47,14 @@ void PwmPinHandler::setValue(float value) {
     this->calculateCycle();
 }
 
+float PwmPinHandler::getValue() {
+    return this->onPercent;
+}
+
+string PwmPinHandler::getType() {
+    return PIN_TYPE_PWM;
+}
+
 void PwmPinHandler::calculateCycle() {
     unsigned long cyclesPerScond = 44000;
 

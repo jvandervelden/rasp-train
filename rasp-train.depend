@@ -29,3 +29,58 @@
 	<wiringPi.h>
 	"BasePinHandler.h"
 
+1498709196 source:/home/pi/repo/rasp-train/src/daemon/main.cpp
+	<signal.h>
+	<wiringPi.h>
+	<string>
+	<iostream>
+	<unistd.h>
+	"QueueMessageHandler.h"
+
+1498966981 /home/pi/repo/rasp-train/src/daemon/QueueMessageHandler.h
+	<string>
+	<iostream>
+	<zmq.hpp>
+	<thread>
+	<wiringPi.h>
+	"MessageDefinitions.h"
+	"PinHandlerManager.h"
+	"pinHandlers/SwitchPinHandler.h"
+	"pinHandlers/PwmPinHandler.h"
+
+1498740092 /home/pi/repo/rasp-train/src/daemon/MessageDefinitions.h
+	<string>
+
+1498740771 /home/pi/repo/rasp-train/src/daemon/PinHandlerManager.h
+	<stdio.h>
+	"pinHandlers/BasePinHandler.h"
+
+1498967878 /home/pi/repo/rasp-train/src/daemon/pinHandlers/BasePinHandler.h
+	"../MessageDefinitions.h"
+
+1498966775 source:/home/pi/repo/rasp-train/src/daemon/PinHandlerManager.cpp
+	"PinHandlerManager.h"
+
+1498968079 source:/home/pi/repo/rasp-train/src/daemon/pinHandlers/BasePinHandler.cpp
+	"BasePinHandler.h"
+
+1498740154 source:/home/pi/repo/rasp-train/src/daemon/pinHandlers/PwmPinHandler.cpp
+	"PwmPinHandler.h"
+
+1498967855 /home/pi/repo/rasp-train/src/daemon/pinHandlers/PwmPinHandler.h
+	<iostream>
+	<wiringPi.h>
+	<thread>
+	"BasePinHandler.h"
+
+1498740284 source:/home/pi/repo/rasp-train/src/daemon/pinHandlers/SwitchPinHandler.cpp
+	"SwitchPinHandler.h"
+
+1498967910 /home/pi/repo/rasp-train/src/daemon/pinHandlers/SwitchPinHandler.h
+	<iostream>
+	<wiringPi.h>
+	"BasePinHandler.h"
+
+1498970378 source:/home/pi/repo/rasp-train/src/daemon/QueueMessageHandler.cpp
+	"QueueMessageHandler.h"
+

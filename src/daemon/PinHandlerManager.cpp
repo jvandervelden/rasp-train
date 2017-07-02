@@ -70,9 +70,10 @@ PinHandlerNode* PinHandlerManager::FindNode(int pin) {
 
 void PinHandlerManager::loopHandlers(NodeLoopHandler callback) {
     PinHandlerNode* current = this->handlerListHead;
+    int index = 0;
 
     while (current != NULL) {
-        callback(current);
+        callback(current, index++, current->prev == NULL, current->next == NULL);
         current = current->next;
     }
 }
