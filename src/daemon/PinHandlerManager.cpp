@@ -40,7 +40,13 @@ void PinHandlerManager::DeleteHandler(int pin) {
 
     if (node == this->handlerListHead) {
         this->handlerListHead = node->next;
-    } else {
+    }
+
+    if (node == this->handlerListTail) {
+        this->handlerListTail = node->prev;
+    }
+
+    if (node->prev != NULL) {
         node->prev->next = node->next;
     }
 
@@ -89,6 +95,9 @@ void PinHandlerManager::DeleteAllHandlers() {
         prev->handler->stop();
         delete prev;
     }
+
+    this->handlerListHead = NULL;
+    this->handlerListTail = NULL;
 }
 
 PinHandlerManager::~PinHandlerManager() {

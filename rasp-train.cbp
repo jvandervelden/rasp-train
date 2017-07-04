@@ -33,6 +33,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="messages.txt" />
 		<Unit filename="src/daemon/MessageDefinitions.h" />
 		<Unit filename="src/daemon/PinHandlerManager.cpp" />
 		<Unit filename="src/daemon/PinHandlerManager.h" />

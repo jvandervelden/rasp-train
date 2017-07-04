@@ -6,12 +6,12 @@ QueueMessageHandler::QueueMessageHandler(int listenPort, PinHandlerManager* pinH
 
     cout << "Starting zero mq on port: " << this->listenPort << "\n";
 
-    char socketAddress[25] = {};
-    sprintf(socketAddress, "tcp://127.0.0.1:%d", this->listenPort);
+    string socketAddress("tcp://127.0.0.1:");
+    socketAddress += to_string(this->listenPort);
 
-    this->socket.bind (socketAddress);
+    this->socket.bind (socketAddress.c_str());
 
-    cout << "Starting to process queue." << endl;
+    cout << "Starting to process queue @: " << socketAddress << endl;
 
     this->running = true;
 
@@ -30,7 +30,14 @@ void QueueMessageHandler::threadFunction() {
 
             cout << "Got message: " << message << endl;
 
-            string replyMessage = this->handleMessage(message);
+            string replyMessage;
+
+            try {
+                replyMessage = this->handleMessage(message);
+            } catch (exception& e) {
+                cout << "Error processing message '" << message << "'. Error: " << e.what() << endl;
+                replyMessage = buildErrorMessage("Unhandled Exception." + string(e.what()));
+            }
 
             zmq::message_t reply (replyMessage.size());
             memcpy (reply.data(), replyMessage.c_str(), replyMessage.size());
@@ -61,7 +68,13 @@ string QueueMessageHandler::handleMessage(string message) {
 }
 
 string QueueMessageHandler::handleConfigMessage(string messageData) {
-    string configMessageType = messageData.substr(0, messageData.find_first_of(':'));
+    string configMessageType;
+
+    if (messageData.find_first_of(':') == string::npos) {
+        configMessageType = messageData;
+    } else {
+        configMessageType = messageData.substr(0, messageData.find_first_of(':'));
+    }
 
     if (configMessageType == CONFIG_MESSAGE_QUIT) {
         this->running = false;
@@ -72,7 +85,12 @@ string QueueMessageHandler::handleConfigMessage(string messageData) {
         });
         return buildSuccessMessage("");
     } else if (configMessageType == CONFIG_MESSAGE_CREATE_GPIO) {
-        string pin = messageData.substr(messageData.find_first_of(':') + 1, 3);
+        if (messageData.find_first_of(':') == string::npos) {
+            return buildErrorMessage("Invalid message format for create GPIO.");
+        }
+
+        string pinData = messageData.substr(messageData.find_first_of(':') + 1);
+        string pin = pinData.substr(0, 3);
         string gpioType = messageData.substr(messageData.find_first_of(':') + 5, 2);
 
         int iPin = stoi(pin);
@@ -97,13 +115,18 @@ string QueueMessageHandler::handleConfigMessage(string messageData) {
         newHandler->run();
 
         this->pinHandlerManager->AddHandler(newHandler);
+
+        return buildSuccessMessage("");
     } else if (configMessageType == CONFIG_MESSAGE_DELETE_GPIO) {
         string pin = messageData.substr(messageData.find_first_of(':') + 1, 3);
         int iPin = stoi(pin);
         this->pinHandlerManager->DeleteHandler(iPin);
+
         return buildSuccessMessage("");
     } else if (configMessageType == CONFIG_MESSAGE_DELETE_ALL) {
         this->pinHandlerManager->DeleteAllHandlers();
+
+        return buildSuccessMessage("");
     }
 
     return buildErrorMessage("Config message type: " + configMessageType + " is invalid.");
@@ -114,7 +137,7 @@ string QueueMessageHandler::handleGpioMessage(string messageData) {
 
     if (gpioMessageType == GPIO_MESSAGE_SET_VALUE) {
         string pin = messageData.substr(messageData.find_first_of(':') + 1, 3);
-        string gpioNewValue = messageData.substr(messageData.find_first_of(':') + 5, 7);
+        string gpioNewValue = messageData.substr(messageData.find_first_of(':') + 5);
 
         int iPin = stoi(pin);
         float fGpioNewValue = stof(gpioNewValue);
@@ -134,11 +157,26 @@ string QueueMessageHandler::handleGpioMessage(string messageData) {
 }
 
 string QueueMessageHandler::handleQueryMessage(string messageData) {
-    string queryMessageType = messageData.substr(0, messageData.find_first_of(':'));
+
+    string queryMessageType;
+
+    if (messageData.find_first_of(':') == string::npos) {
+        queryMessageType = messageData;
+    } else {
+        queryMessageType = messageData.substr(0, messageData.find_first_of(':'));
+    }
 
     if (queryMessageType == QUERY_MESSAGE_GPIO) {
-        string pin = messageData.substr(messageData.find_first_of(':') + 1, 3);
+
+        if (messageData.find_first_of(':') == string::npos) {
+            return buildErrorMessage("Invalid message format for query GPIO.");
+        }
+
+        string queryMessageData = messageData.substr(messageData.find_first_of(':') + 1);
+        string pin = queryMessageData.substr(0, 3);
+
         int iPin = stoi(pin);
+
         BasePinHandler* handler = this->pinHandlerManager->GetHandler(iPin);
 
         if (handler == NULL) {
@@ -182,11 +220,11 @@ string QueueMessageHandler::handleQueryMessage(string messageData) {
 string QueueMessageHandler::buildGpioMessage(BasePinHandler* handler) {
     string message;
     message += "{\"wiringPiPin\":\"";
-    message += handler->getPin();
+    message += std::to_string(handler->getPin());
     message += "\",\"type\":\"";
     message += handler->getType();
     message += "\",\"value\":";
-    message += handler->getValue();
+    message += std::to_string(handler->getValue());
     message += "}";
 
     return message;
