@@ -1,15 +1,15 @@
-#include "PwmPinHandler.h"
+#include "SoftwarePwmPinHandler.h"
 
-PwmPinHandler::PwmPinHandler(int pin) : BasePinHandler(pin) {
+SoftwarePwmPinHandler::SoftwarePwmPinHandler(int pin) : BasePinHandler(pin) {
 }
 
-void PwmPinHandler::run() {
+void SoftwarePwmPinHandler::run() {
     this->running = true;
 
-    this->pwmThread = thread(&PwmPinHandler::threadFunction, this);
+    this->pwmThread = thread(&SoftwarePwmPinHandler::threadFunction, this);
 }
 
-void PwmPinHandler::threadFunction() {
+void SoftwarePwmPinHandler::threadFunction() {
     cout << "Starting pwm on pin: " << this->pin << "\n";
 
     pinMode(this->pin, OUTPUT);
@@ -29,14 +29,14 @@ void PwmPinHandler::threadFunction() {
     cout << "Stopping pwm on pin: " << this->pin << "\n";
 }
 
-void PwmPinHandler::stop() {
+void SoftwarePwmPinHandler::stop() {
     if (this->running) {
         this->running = false;
         this->pwmThread.join();
     }
 }
 
-void PwmPinHandler::setValue(float value) {
+void SoftwarePwmPinHandler::setValue(float value) {
     this->onPercent =
         value > 1.0 ?
         1.0 :
@@ -47,15 +47,15 @@ void PwmPinHandler::setValue(float value) {
     this->calculateCycle();
 }
 
-float PwmPinHandler::getValue() {
+float SoftwarePwmPinHandler::getValue() {
     return this->onPercent;
 }
 
-string PwmPinHandler::getType() {
+string SoftwarePwmPinHandler::getType() {
     return PIN_TYPE_PWM;
 }
 
-void PwmPinHandler::calculateCycle() {
+void SoftwarePwmPinHandler::calculateCycle() {
     unsigned long cyclesPerScond = 44000;
 
     // 1000 Microseconds in milliecond * 1000 milliseconds in a second = 1000000.
@@ -65,6 +65,6 @@ void PwmPinHandler::calculateCycle() {
     this->offMicroseconds = microsecondsForCycle * (1.0 - this->onPercent);
 }
 
-PwmPinHandler::~PwmPinHandler() {
+SoftwarePwmPinHandler::~SoftwarePwmPinHandler() {
     this->stop();
 }

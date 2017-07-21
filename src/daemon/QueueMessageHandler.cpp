@@ -104,7 +104,11 @@ string QueueMessageHandler::handleConfigMessage(string messageData) {
         BasePinHandler* newHandler;
 
         if (gpioType == PIN_TYPE_PWM) {
-            newHandler = (BasePinHandler*)new PwmPinHandler(iPin);
+            if (iPin == HARDWARE_PWM_PIN) {
+                newHandler = (BasePinHandler*)new HardwarePwmPinHandler(iPin);
+            } else {
+                newHandler = (BasePinHandler*)new SoftwarePwmPinHandler(iPin);
+            }
         } else if (gpioType == PIN_TYPE_SWITCH) {
             newHandler = (BasePinHandler*)new SwitchPinHandler(iPin);
         } else {

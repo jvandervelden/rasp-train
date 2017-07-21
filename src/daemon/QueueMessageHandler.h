@@ -11,7 +11,8 @@
 #include "MessageDefinitions.h"
 #include "PinHandlerManager.h"
 #include "pinHandlers/SwitchPinHandler.h"
-#include "pinHandlers/PwmPinHandler.h"
+#include "pinHandlers/HardwarePwmPinHandler.h"
+#include "pinHandlers/SoftwarePwmPinHandler.h"
 
 using namespace std;
 

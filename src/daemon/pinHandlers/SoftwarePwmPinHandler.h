@@ -1,5 +1,5 @@
-#ifndef PWMPINHANDLER_H
-#define PWMPINHANDLER_H
+#ifndef SOFTWAREPWMPINHANDLER_H
+#define SOFTWAREPWMPINHANDLER_H
 
 #include <iostream>
 #include <wiringPi.h>
@@ -9,9 +9,9 @@
 
 using namespace std;
 
-class PwmPinHandler : public BasePinHandler {
+class SoftwarePwmPinHandler : public BasePinHandler {
     public:
-        PwmPinHandler(int pin);
+        SoftwarePwmPinHandler(int pin);
 
         void run();
         void stop();
@@ -19,7 +19,7 @@ class PwmPinHandler : public BasePinHandler {
         float getValue();
         string getType();
 
-        ~PwmPinHandler();
+        ~SoftwarePwmPinHandler();
     protected:
     private:
         float onPercent = 0.0;
@@ -32,4 +32,4 @@ class PwmPinHandler : public BasePinHandler {
         void threadFunction();
 };
 
-#endif // PWMPINHANDLER_H
+#endif // SOFTWAREPWMPINHANDLER_H
