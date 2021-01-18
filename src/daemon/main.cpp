@@ -17,6 +17,8 @@
 
 #include <unistd.h>
 
+#include <thread>
+
 #include "QueueMessageHandler.h"
 
 using namespace std;
@@ -41,7 +43,7 @@ int main(int argc, char **argv)
     QueueMessageHandler messageHandler(5555, pinHandlerManager);
 
     while (run && messageHandler.isRunning()) {
-
+        delayMicroseconds(100000);
     }
 
     delete pinHandlerManager;
